@@ -1,17 +1,26 @@
-CC=gcc
+CC = gcc
+PREFIX = /usr/local
 CFLAGS = -Wall -lm
 
 DEPS = stack.h
 
-OBJ = expr.o stack.o
+OBJ = rpxe.o stack.o
 
-expr: $(OBJ)
+rpxe: $(OBJ)
 	$(CC) -o $@ $(OBJ) $(CFLAGS)
 
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
+install: rpxe
+	mkdir -p $(PREFIX)/bin
+	cp -f rpxe $(PREFIX)/bin
+	chmod 755 $(PREFIX)/bin/rpxe
+
+uninstall:
+	rm -f $(PREFIX)/bin/rpxe
+
 .PHONY: clean
 
 clean:
-	rm *.o expr
+	rm -f *.o rpxe

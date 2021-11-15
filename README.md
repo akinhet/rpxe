@@ -1,4 +1,4 @@
-expr
+rpxe
 ====
 
 This is a small command line tool used to evaluate [reverse polish notation](https://en.wikipedia.org/wiki/Reverse_Polish_notation) mathematical expressions.
