@@ -1,0 +1,51 @@
+.TH RPXE 1 rpxe\-VERSION
+.SH NAME
+rpxe \- reverse polish expression interpreter
+.SH SYNOPSIS
+.B rpxe
+.RB [\-h|\-\-help]
+.P
+.B rpxe 
+.IR <expression>
+.SH DESCRIPTION
+.B rpxe
+is a small command line tool for evaluation of reverse polish notation mathematical expressions. It reads the expressions from stdin and outputs the top stack value (the result of last operation) on stdout.
+.SH OPTIONS
+.TP
+.B \-h, \-\-help
+show quick help dialog
+.SH USAGE
+In RPN the operands come before the operator.
+.TP
+.B Example
+2 / (3 + 4) is equivalent to 2 3 4 + /
+.SH OPERATORS
+.TP
+.BI +
+Addition
+.TP
+.BI \-
+Subtraction
+.TP
+.BI *
+Multiplication
+.TP
+.BI /
+Division
+.TP
+.BI ^
+Exponentiation
+.TP
+.B root
+Taking a root
+.TP
+.B sin
+A sine of an angle (in degrees)
+.TP
+.B cos
+A cosine of an angle (in degrees)
+.TP
+.B tan, tg
+A tangent of an angle (in degrees)
+.SH SEE ALSO
+.IR expr(1)

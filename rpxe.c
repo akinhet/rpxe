@@ -2,7 +2,7 @@
 #include <math.h>
 #include <string.h>
 
-#define usage() (printf("usage: %s [expression]\n       %s -h|--help\n", argv[0], argv[0]))
+#define usage() (printf("usage: %s <expression>\n       %s [-h|--help]\n", argv[0], argv[0]))
 #define degtorad(x) (x / 180 * M_PI)
 
 
