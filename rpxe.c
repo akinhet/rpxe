@@ -9,6 +9,26 @@
 #define degtorad(x) (x / 180 * M_PI)
 
 
+double fmod(double a, double b)
+{
+	double mod;
+
+	if (a < 0)
+		mod = -a;
+	else
+		mod =  a;
+	if (b < 0)
+		b = -b;
+
+	while (mod >= b)
+		mod = mod - b;
+
+	if (a < 0)
+		return -mod;
+
+	return mod;
+}
+
 int main(int argc, const char *argv[])
 {
 	double a,b,num = 0;
@@ -42,6 +62,8 @@ int main(int argc, const char *argv[])
 			push(&stack, a / b);
 		} else if (!strcmp(argv[i], "^"))
 			push(&stack, pow(pop(&stack), pop(&stack)));
+		else if (!strcmp(argv[i], "%"))
+			push(&stack, fmod(pop(&stack), pop(&stack)));
 		else if (!strcmp(argv[i], "root"))
 			push(&stack, pow(pop(&stack), 1/pop(&stack)));
 		else if (!strcmp(argv[i], "sin"))
