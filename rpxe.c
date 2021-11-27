@@ -9,26 +9,6 @@
 #define degtorad(x) (x / 180 * M_PI)
 
 
-double fmod(double a, double b)
-{
-	double mod;
-
-	if (a < 0)
-		mod = -a;
-	else
-		mod =  a;
-	if (b < 0)
-		b = -b;
-
-	while (mod >= b)
-		mod = mod - b;
-
-	if (a < 0)
-		return -mod;
-
-	return mod;
-}
-
 int main(int argc, const char *argv[])
 {
 	double a,b,num = 0;
