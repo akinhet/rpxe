@@ -1,70 +1,100 @@
 #include "stack.h"
 #include <math.h>
 #include <string.h>
+#include <readline/readline.h>
 
-#define VERSION "1.0"
+#define VERSION "2.0"
+
+#define PROMPT "> "
 
 #define usage() (printf("usage: %s <expression>\n       %s [-h|--help]\n", argv[0], argv[0]))
 #define version() (printf("%s-%s\n", argv[0], VERSION))
 #define degtorad(x) (x / 180 * M_PI)
 
 
-int main(int argc, const char *argv[])
+void evaluate(char *v)
 {
 	double a,b,num = 0;
 	Stack stack = {-1};
 
-	char *endptr = NULL;
+	char *endptr = NULL,
+		 *token = NULL;
 
-	if (argc < 2) {
-		usage();
-		exit(1);
-	}
+	token = strtok(v, " ");
 
-	for (int i = 1; i < argc; i++) {
-		if (!strcmp(argv[i], "--help") || !strcmp(argv[i], "-h")) {
-			usage();
-			return(0);
-		} else if (!strcmp(argv[i], "--version") || !strcmp(argv[i], "-v")) {
-			version();
-			return(0);
-		} else if (!strcmp(argv[i], "+"))
+	do {
+		if (!strcmp(token, "+"))
 			push(&stack, pop(&stack) + pop(&stack));
-		else if (!strcmp(argv[i], "-")) {
+		else if (!strcmp(token, "-")) {
 			b = pop(&stack);
 			a = pop(&stack);
 			push(&stack, a - b);
-		} else if (!strcmp(argv[i], "*")) {
+		} else if (!strcmp(token, "*")) {
 			push(&stack, pop(&stack) * pop(&stack));
-		} else if (!strcmp(argv[i], "/")) {
+		} else if (!strcmp(token, "/")) {
 			b = pop(&stack);
 			a = pop(&stack);
 			push(&stack, a / b);
-		} else if (!strcmp(argv[i], "^"))
+		} else if (!strcmp(token, "^"))
 			push(&stack, pow(pop(&stack), pop(&stack)));
-		else if (!strcmp(argv[i], "%"))
+		else if (!strcmp(token, "%"))
 			push(&stack, fmod(pop(&stack), pop(&stack)));
-		else if (!strcmp(argv[i], "root"))
+		else if (!strcmp(token, "root"))
 			push(&stack, pow(pop(&stack), 1/pop(&stack)));
-		else if (!strcmp(argv[i], "sin"))
+		else if (!strcmp(token, "sin"))
 			push(&stack, sin(degtorad(pop(&stack))));
-		else if (!strcmp(argv[i], "cos"))
+		else if (!strcmp(token, "cos"))
 			push(&stack, cos(degtorad(pop(&stack))));
-		else if (!strcmp(argv[i], "tan") || !strcmp(argv[i], "tg"))
+		else if (!strcmp(token, "tan") || !strcmp(token, "tg"))
 			push(&stack, tan(degtorad(pop(&stack))));
 		else {
-				num = strtod(argv[i], &endptr);
-				if (!strcmp(argv[i], endptr)) {
-					fprintf(stderr, "Unknown value or operation: %s\n", argv[i]);
-					usage();
-					exit(2);
+				num = strtod(token, &endptr);
+				if (!strcmp(token, endptr)) {
+					fprintf(stderr, "Unknown value or operation: %s\n", token);
+					return;
 				} else {
 					push(&stack, num); 
 				}
 		}
+	} while ((token = strtok(NULL, " ")) != NULL);
+
+	printf("%g\n", pop(&stack));
+}
+
+
+void interactive()
+{
+	char *line = NULL;
+
+	while(1) {
+		line = readline(PROMPT);
+		if (line == NULL) {
+			free(line);
+			return;
+		} else if (strlen(line) == 0)
+			continue;
+		else
+			evaluate(line);
+	}
+}
+
+
+int main(int argc, const char *argv[])
+{
+	if (argc == 1) {
+		interactive();
+		return(0);
 	}
 
-	printf("%f\n", pop(&stack));
+	if (!strcmp(argv[1], "--help") || !strcmp(argv[1], "-h")) {
+		usage();
+		return(0);
+	} else if (!strcmp(argv[1], "--version") || !strcmp(argv[1], "-v")) {
+		version();
+		return(0);
+	} else if (!strcmp(argv[1], "--interactive") || !strcmp(argv[1], "-i")){
+		interactive();
+	}
 
 	return(0);
 }

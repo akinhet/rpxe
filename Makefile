@@ -1,9 +1,9 @@
-VERSION = 1.0
+VERSION = 2.0
 
 CC = gcc
 PREFIX = /usr/local
 MANPREFIX = /share/man
-CFLAGS = -Wall -lm
+CFLAGS = -Wall -lm -lreadline
 
 DEPS = stack.h
 
