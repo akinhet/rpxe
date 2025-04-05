@@ -2,6 +2,7 @@
 #include <math.h>
 #include <string.h>
 #include <readline/readline.h>
+#include <readline/history.h>
 
 #define VERSION "2.1"
 
@@ -98,6 +99,8 @@ void interactive()
 {
 	char *line = NULL;
 
+	using_history();
+
 	while(1) {
 		line = readline(PROMPT);
 		if (line == NULL) {
@@ -107,8 +110,10 @@ void interactive()
 			continue;
 		else if (!strcmp(line, "?") || !strcmp(line, "help"))
 			printf("%s", HELP_STRING);
-		else
+		else {
+			add_history(line);
 			evaluate(line);
+		}
 	}
 }
 
